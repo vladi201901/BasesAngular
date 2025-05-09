@@ -1,0 +1,46 @@
+<h1>Datos del Empleado</h1>
+<p>{{apellido}}</p>
+<p>{{nombre()}}</p>
+
+<ul *ngFor="let item of hobbies()">
+    <li>{{item}}</li>
+</ul>
+<hr>
+<img class="logo" [src]="imagen" alt="">
+<input type="text" [value]="nombre()"> <br>
+<button disabled="true">Enviar</button>
+<hr>
+<button (click)="clickHandler()">Click me</button>
+<br>
+
+<button (dblclick)="dblHandler()">Double me</button>
+<br>
+<p>(change)</p>
+<input type="number" [value]="person.age" (change)="changeHandler($event)">
+<p>(change)</p>
+<input type="text" [value]="person.age" (change)="changeHandler($event)">
+<p>(keydown)</p>
+<input type="text" [value]="person.age" (keydown)="kedownHandler($event)">
+<p>(keydown shift)</p>
+<input type="text" [value]="person.age" (keydown.shift.t)="clickHandler()">
+<hr>
+<h1>Signal</h1>
+<ul >
+    <p>Total: {{hobbies().length}}</p>
+    <li *ngFor="let item of hobbies(); index as i">{{i}} {{item}}</li>
+</ul>
+<hr>
+<div *ngIf="1 !==1">
+    Mi Contenido
+</div>
+<div *ngIf="person.age === 33">
+    Mi edad es 33
+</div>
+<div *ngIf="person.profesion=== 'Developer Frontend' || person.age > 18 ; else templateBlock" >
+    Cumplio con lo estipulado
+</div>
+<ng-template #templateBlock>
+    Soy Vladimir Paz y soy menor de edad
+</ng-template>
+<input type="color" [formControl]="colorCrtl">
+<p>Color:{{colorCrtl.value}}</p>
