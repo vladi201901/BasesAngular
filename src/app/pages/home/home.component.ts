@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Hobbies } from '../../interface/hobbies.model';
 import { FormControl, ReactiveFormsModule, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
@@ -33,6 +33,20 @@ export class HomeComponent {
       complement: false
     }
   ]);
+
+  filter = signal<'all'| 'pending' | 'complement'>('all');
+  tasksByFilter = computed(()=>{
+    const filter = this.filter();
+    const hobbie = this.hobbies();
+    if(filter === 'pending'){
+      return hobbie.filter(hobbie => !hobbie.complement);
+    }
+    if(filter === 'complement'){
+      return hobbie.filter(hobbie => hobbie.complement);
+    }
+    return  hobbie;
+  });
+
   newHobbieCrtl = new FormControl('',{
     nonNullable:true,
     validators:[
@@ -89,6 +103,41 @@ export class HomeComponent {
       this.hobbies().splice(index,1);
       return this.hobbies();
     });
+  }
+  updateHobbieEditingMode(index : number){
+    this.hobbies.update(prevState =>{
+      return prevState.map((hobbie, position)=>{
+        if(position === index){
+          return{
+            ...hobbie,
+            editing:true
+          }
+        }
+        return {
+          ...hobbie,
+          editing: false
+        };
+      })
+    })
+  };
+  updateHobbieText(index : number, event:Event){
+    const input = event.target as HTMLInputElement;
+    this.hobbies.update(prevState =>{
+      return prevState.map((hobbie, position)=>{
+        if(position === index){
+          return{
+            ...hobbie,
+            hobbie: input.value,
+            editing: false
+          }
+        }
+       return hobbie;
+      })
+    })
+  };
+
+  changeFilter(filter: 'all'| 'pending' | 'complement'){
+    this.filter.set(filter);
   }
 
 }

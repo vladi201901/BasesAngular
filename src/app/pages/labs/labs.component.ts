@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-labs',
@@ -27,9 +27,21 @@ export class LabsComponent {
   }
   imagen = 'https://blog.openreplay.com/images/3-methods-check-angular-version/images/hero.png';
 
-  colorCrtl = new FormControl();
+  colorCtrl = new FormControl();
+  widthCtrl = new FormControl(50, {
+    nonNullable : true
+  });
+  
+  nameCtrl = new FormControl(50, {
+    nonNullable : true,
+    validators : [
+      Validators.required,
+      Validators.minLength(3)
+    ]
+  });
+
   constructor(){
-    this.colorCrtl.valueChanges.subscribe(value =>{
+    this.colorCtrl.valueChanges.subscribe(value =>{
       console.log(value);
     });
   }
